@@ -25,23 +25,11 @@ function App() {
     try {
       const response = await axios({
         method: "post",
-        url: "http://localhost:3000/excel/upload",
+        url: "http://167.235.238.223:3000/excel/upload",
         data: formData,
         headers: { "Content-Type": "multipart/form-data" },
         responseType: 'blob', 
       }).then((response) => {
-        // // create file link in browser's memory
-        // let binaryData = [];
-        // binaryData.push(response.data);
-        // const href = URL.createObjectURL(new Blob(binaryData, {type: ""}));
-
-        // // create "a" HTML element with href to file & click
-        // const link = document.createElement('a');
-        // link.href = href;
-        // link.setAttribute('download', 'file.xlsx'); //or any other extension
-        // document.body.appendChild(link);
-        // link.click();
-
         const type = response.headers['content-type']
         const blob = new Blob([response.data], { type: type })
         const link = document.createElement('a')
@@ -49,23 +37,13 @@ function App() {
         link.download = 'file.xlsx'
         link.click()
 
-        // clean up "a" element & remove ObjectURL
         document.body.removeChild(link);
-        // URL.revokeObjectURL(href);
+
       });
     } catch(error) {
       console.log(error)
     }
-    // let formData = new FormData();
 
-    // formData.append("file", file);
-
-    // return basicHTTP.post("/upload", formData, {
-    //   headers: {
-    //     "Content-Type": "multipart/form-data",
-    //   },
-    //   onUploadProgress,
-    // });
   }
 
 
@@ -90,7 +68,7 @@ function App() {
         </form>
       </div>
       <p className="read-the-docs">
-        Al descargar el archivo recuerda colocar la extension <strong>.xlsx</strong> en el nombre antes de aceptar la descarga.
+        <strong>El primer archivo debe ser el que tenga los datos anterior con respecto al segundo.</strong>
       </p>
     </div>
   )
