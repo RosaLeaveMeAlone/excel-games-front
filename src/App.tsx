@@ -7,6 +7,7 @@ function App() {
 
   const [selectedFile1, setSelectedFile1] = useState(null);
   const [selectedFile2, setSelectedFile2] = useState(null);
+  const [showIcon, setshowIcon] = useState(false);
 
   const handleFileSelect1 = (event: any) => {
     setSelectedFile1(event.target.files[0])
@@ -23,6 +24,7 @@ function App() {
     formData.append("file1", selectedFile1);
     formData.append("file2", selectedFile2);
     try {
+      setshowIcon(true);
       const response = await axios({
         method: "post",
         url: "http://167.235.238.223:3000/excel/upload",
@@ -30,6 +32,7 @@ function App() {
         headers: { "Content-Type": "multipart/form-data" },
         responseType: 'blob', 
       }).then((response) => {
+        setshowIcon(false);
         const type = response.headers['content-type']
         const blob = new Blob([response.data], { type: type })
         const link = document.createElement('a')
@@ -61,7 +64,8 @@ function App() {
             <input type="file" onChange={handleFileSelect2}/>
           </div>
           <div style={{ paddingTop : "5%" }}> 
-            <button type="submit" style={{ borderColor: '#e7e7e7', color: 'black' }}>
+            <i className={`fa-solid fa-circle-down ${showIcon ? 'fa-beat' : 'hide'}`}  style={{ paddingRight : "2%" }}></i>
+            <button disabled={showIcon} type="submit" style={{ borderColor: '#e7e7e7', color: 'black' }}>
               Descargar
             </button>
           </div>
